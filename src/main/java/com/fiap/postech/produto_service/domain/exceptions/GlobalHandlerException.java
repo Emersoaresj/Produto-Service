@@ -32,7 +32,7 @@ public class GlobalHandlerException {
         Map<String, Object> response = new HashMap<>();
         response.put(TIMESTAMP, LocalDateTime.now());
         response.put(STATUS, HttpStatus.INTERNAL_SERVER_ERROR.value());
-        response.put(ERROR, "Erro ao salvar no Banco de Dados.");
+        response.put(ERROR, "Erro interno.");
         response.put(MENSAGEM, erroInternoException.getMessage());
         response.put(PATH, request.getDescription(false));
 

@@ -11,4 +11,5 @@ public interface ProdutoRepositoryJPA extends JpaRepository<ProdutoEntity, Integ
 
     Optional<ProdutoEntity> findBySkuProduto(String sku);
 
+    void deleteBySkuProduto(String sku);
 }

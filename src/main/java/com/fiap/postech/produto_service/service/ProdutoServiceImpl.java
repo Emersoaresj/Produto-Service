@@ -1,5 +1,6 @@
 package com.fiap.postech.produto_service.service;
 
+import com.fiap.postech.produto_service.api.dto.ProdutoAtualizaRequest;
 import com.fiap.postech.produto_service.domain.model.Produto;
 import com.fiap.postech.produto_service.domain.exceptions.*;
 import com.fiap.postech.produto_service.domain.exceptions.internal.InvalidPrecoException;
@@ -16,6 +17,8 @@ import com.fiap.postech.produto_service.utils.ConstantUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Slf4j
 @Service
@@ -49,6 +52,51 @@ public class ProdutoServiceImpl implements ProdutoServicePort {
             Produto produto = repositoryPort.findBySkuProduto(sku)
                     .orElseThrow(() -> new ProdutoNotFoundException(ConstantUtils.PRODUTO_NAO_ENCONTRADO));
             return ProdutoMapper.INSTANCE.domainToDtoClient(produto);
+        } catch (ProdutoNotFoundException e) {
+            log.error("Produto não encontrado para o SKU: {}", sku, e);
+            throw e;
+        } catch (Exception e) {
+            log.error("Erro inesperado ao buscar produto por SKU: {}", sku, e);
+            throw new ErroInternoException("Erro interno ao tentar buscar produto: " + e.getMessage());
+        }
+    }
+
+    @Override
+    public List<ProdutoDto> listarTodos() {
+        try {
+            return repositoryPort.listarTodos();
+        } catch (Exception e) {
+            log.error("Erro inesperado ao buscar produtos", e);
+            throw new ErroInternoException("Erro interno ao tentar buscar produtos: " + e.getMessage());
+        }
+    }
+
+    @Override
+    public ResponseDto atualizarProduto(String sku, ProdutoAtualizaRequest request) {
+        try {
+            Produto produto = repositoryPort.findBySkuProduto(sku)
+                    .orElseThrow(() -> new ProdutoNotFoundException(ConstantUtils.PRODUTO_NAO_ENCONTRADO));
+
+            produto.setPrecoProduto(request.getPrecoProduto());
+            produto.setNomeProduto(request.getNomeProduto());
+
+            return repositoryPort.atualizarProduto(produto);
+        } catch (ProdutoNotFoundException| InvalidPrecoException | InvalidSkuException | ProdutoExistsException e) {
+            throw e;
+        } catch (Exception e) {
+            log.error("Erro inesperado ao cadastrar produto", e);
+            throw new ErroInternoException("Erro interno ao tentar cadastrar produto: " + e.getMessage());
+        }
+
+    }
+
+    @Override
+    public void deletarProduto(String sku) {
+        try {
+            repositoryPort.findBySkuProduto(sku)
+                    .orElseThrow(() -> new ProdutoNotFoundException(ConstantUtils.PRODUTO_NAO_ENCONTRADO));
+
+            repositoryPort.deletarProduto(sku);
         } catch (ProdutoNotFoundException e) {
             log.error("Produto não encontrado para o SKU: {}", sku, e);
             throw e;

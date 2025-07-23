@@ -21,4 +21,5 @@ public class ConstantUtils {
 
     //SUCESSO
     public static final String PRODUTO_CADASTRADO = "Produto cadastrado com sucesso!";
+    public static final String PRODUTO_ATUALIZADO = "Produto atualizado com sucesso!";
 }
