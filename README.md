@@ -1,6 +1,6 @@
 # Produto Service
 
-Serviço Java baseado em Spring Boot para gerenciamento de produtos, utilizando Postgres e arquitetura hexagonal (Ports & Adapters).
+Serviço Java baseado em Spring Boot para gerenciamento de produtos, utilizando PostgreSQL, Flyway para migrações e arquitetura hexagonal (Ports & Adapters).
 
 ---
 
