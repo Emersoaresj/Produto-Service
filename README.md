@@ -75,7 +75,8 @@ src/main/java/com/fiap/postech/produto_service/
 
 O arquivo `src/main/resources/application.yml` define:
 
-- Conexão com Postgres (variáveis necessárias em um arquivo .env).
+ Conexão com PostgreSQL (ajustável por variáveis de ambiente).
+- Flyway para migrações automáticas.
 - JPA configurado para atualização automática do schema e exibição de SQL.
 
 ---
